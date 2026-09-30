@@ -1,0 +1,41 @@
+using CinemaHubBackground.Data;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddControllers();
+
+builder.Services.AddOpenApi();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin();   // Разрешаем запросы откуда угодно
+        policy.AllowAnyMethod();   // Разрешаем любые методы (GET, POST...)
+        policy.AllowAnyHeader();  // Разрешаем любые заголовки
+    });
+});
+
+var app = builder.Build();
+app.UseCors();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

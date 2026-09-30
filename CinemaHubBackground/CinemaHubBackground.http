@@ -1,0 +1,6 @@
+@CinemaHubBackground_HostAddress = http://localhost:5062
+
+GET {{CinemaHubBackground_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

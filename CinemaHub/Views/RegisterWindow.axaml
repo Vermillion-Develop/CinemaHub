@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CinemaHub.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="using:CinemaHub.Views"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+        x:Class="CinemaHub.Views.RegisterWindow"
+        x:DataType="vm:RegisterViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CinemaHub">
+
+    <Design.DataContext>
+        
+        <vm:RegisterViewModel/>
+
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,80*" Background="#3F2D56">
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
+            <TextBlock VerticalAlignment="Center" FontSize="36">
+                <Run Text="Cinema" Foreground="White"/>
+                <Run Text="Hub" Foreground="Orange"/>
+            </TextBlock>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1"  Orientation="Vertical">
+            <Label Foreground="Orange" Content="Введите фамилию"/>
+            <TextBox PlaceholderText="Family" Text="{Binding Family}"/>
+            <Label Foreground="Orange" Content="Введите имя"/>
+            <TextBox PlaceholderText="Name" Text="{Binding Name}"/>
+            <Label Foreground="Orange" Content="Введите отчество (при наличии)"/>
+            <TextBox PlaceholderText="Father" Text="{Binding Father}"/>
+            <Label Foreground="Orange" Content="Введите почту"/>
+            <TextBox PlaceholderText="Email" Text="{Binding Email}"/>
+            <Label Foreground="Orange" Content="Введите пароль"/>
+            <TextBox PlaceholderText="Password" Text="{Binding Password}"/>
+            <Label Foreground="Orange" Content="Повторите пароль"/>
+            <TextBox PlaceholderText="Second Password" Text="{Binding SecondPassword}"/>
+            <Label Foreground="Red" Content="{Binding ErrorMessage}" HorizontalContentAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Width="150" HorizontalContentAlignment="Center" Background="#0D1730" Command="{Binding SignUpCommand}">
+                    <TextBlock>
+                        <Run Text="Sign" Foreground="White"/>
+                   <Run Text="Up" Foreground="Orange"/>
+                    </TextBlock>
+                </Button>
+                <Button Command="{Binding GoToStartWindowCommand}" Content="Back" Width="150" HorizontalContentAlignment="Center" Background="#0D1730" Foreground="White" CommandParameter="{Binding $parent[Window]}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

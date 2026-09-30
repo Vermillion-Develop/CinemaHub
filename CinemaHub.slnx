@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CinemaHub/CinemaHub.csproj" />
+  <Project Path="CinemaHubBackground/CinemaHubBackground.csproj" />
+  <Project Path="CinemaHubShared/CinemaHubShared.csproj" />
+</Solution>

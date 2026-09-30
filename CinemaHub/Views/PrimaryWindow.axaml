@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CinemaHub.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CinemaHub.Views.PrimaryWindow"
+        x:DataType="vm:PrimaryWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CinemaHub">
+
+    <Design.DataContext>
+        
+        <vm:PrimaryWindowViewModel/>
+
+    </Design.DataContext>
+    <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,20*, 70*" Background="#3F2D56">
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
+            <TextBlock VerticalAlignment="Center" FontSize="36">
+                <Run Text="Cinema" Foreground="White"/>
+                <Run Text="Hub" Foreground="Orange"/>
+            </TextBlock>
+            <TextBlock Text="Фильмы" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
+            <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="Orange" Foreground="White" PlaceholderForeground="white" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
+                <ComboBox.Items>
+                    <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{Binding OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Мои билеты" HorizontalAlignment="Stretch" Command="{Binding OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Настройки" HorizontalAlignment="Stretch" Command="{Binding OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Выход" HorizontalAlignment="Stretch" Command="{Binding LogOutCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                </ComboBox.Items>
+                <ComboBox.Styles>
+                    <Style Selector="ComboBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                 </ComboBox.Styles>
+            </ComboBox>
+
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <DatePicker SelectedDate="{Binding SelectedDateSeansAxaml}" Grid.Row="1" Background="Red" Width="150" Margin="10,0,10,0"/>
+            <ComboBox SelectedItem="{Binding SelectedTime}" Grid.Row="1" Background="Red" Width="150" ItemsSource="{Binding Times}"/>
+            <Button Grid.Row="1" Content="Обновить" Background="Orange" Foreground="White" Margin="10,0,0,0" Command="{Binding RefreshSeansCommand}"/>
+        </StackPanel>
+        <Grid Grid.Row="2" Grid.ColumnSpan="3">
+            <ListBox ItemsSource="{Binding Films}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding FilmName}"/>
+                            <TextBlock Text="{Binding FilmDescription }"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+    
+</Window>

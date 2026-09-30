@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CinemaHub.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+        x:Class="CinemaHub.Views.StartWindow"
+        x:DataType="vm:LoginViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CinemaHub">
+
+    <Design.DataContext>
+        
+        <vm:LoginViewModel/>
+
+    </Design.DataContext>
+   <Grid ColumnDefinitions="32*, 36*, 32*" RowDefinitions="25*, 75*" Background="#3F2D56">
+       <Grid Grid.ColumnSpan="3" Grid.Row="0" Background="#0D1730">
+           <TextBlock FontSize="36" VerticalAlignment="Center">
+               <Run Text="Cinema" Foreground="White"/>
+               <Run Text="Hub" Foreground="Orange"/>
+           </TextBlock>
+       </Grid>
+       <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" >
+           <TextBox PlaceholderText="E-mail" Margin="0,0,0,20" Foreground="Black" Text="{Binding Email}"/>
+           <TextBox PasswordChar="*" RevealPassword="True" PlaceholderText="Password" Margin="0,0,0,10" Foreground="Black" Text="{Binding Password}"/>
+           <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+           <Button  HorizontalAlignment="Center" Width="200" HorizontalContentAlignment="Center" Margin="0,0,0,5" Background="#0D1730" Command="{Binding LoginInCommand}" CommandParameter="{Binding $parent[Window]}">
+               <TextBlock>
+                   <Run Text="Sign" Foreground="White"/>
+                   <Run Text="In" Foreground="Orange"/>
+               </TextBlock>
+           </Button>
+           <Button  HorizontalAlignment="Center" Width="200" HorizontalContentAlignment="Center" Margin="0,0,0,5" Background="#0D1730" Command="{Binding OpenRegistrationWindowCommand}" CommandParameter="{Binding $parent[Window]}">
+               <TextBlock>
+                   <Run Text="Sign" Foreground="White"/>
+                   <Run Text="Up" Foreground="Orange"/>
+               </TextBlock>
+           </Button>
+       </StackPanel>
+   </Grid>
+</Window>
