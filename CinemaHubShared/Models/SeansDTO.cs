@@ -13,10 +13,12 @@ namespace CinemaHubShared.Models
         public DateTime? Date_end { get; set; }
         public DateOnly? Day { get; set; }
 
+        public decimal? FilmRate { get; set; }
         public string? FilmName { get; set; }
         public string? FilmDescription { get; set; }
         public string? FilmAdultRate { get; set; }
         public string? FilmVersion { get; set; }
+        public byte[]? FilmHashedImg { get; set; }
 
     }
 }

@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using CinemaHub.Views;
 using System;
 using System.Linq;
+using Avalonia.Media.Imaging;
 
 namespace CinemaHub.ViewModels
 {
@@ -31,7 +32,11 @@ namespace CinemaHub.ViewModels
         };
 
         [ObservableProperty]
+        public Bitmap? _readyImg;
+
+        [ObservableProperty]
         public TimeSpan _selectedTime;
+
         [ObservableProperty]
         public DateTimeOffset? _selectedDateSeansAxaml = DateTimeOffset.Now;
 
@@ -40,6 +45,8 @@ namespace CinemaHub.ViewModels
 
         [ObservableProperty]
         public DateOnly _selectedDateSeans;
+
+
         public PrimaryWindowViewModel()
         {
             _apiService = new ApiService();
@@ -47,7 +54,7 @@ namespace CinemaHub.ViewModels
         }
 
       
-
+        //Открыть меню "Фильмы"
         [RelayCommand]
         public async Task OpenFilms(Window? currentWindow)
         {
@@ -60,6 +67,7 @@ namespace CinemaHub.ViewModels
             currentWindow?.Close();
         }
 
+        //Открыть меню "Мои билеты"
         [RelayCommand]
         public async Task OpenMyTickets(Window? currentWindow)
         {
@@ -72,6 +80,7 @@ namespace CinemaHub.ViewModels
             currentWindow?.Close();
         }
 
+        //Открыть меню опций
         [RelayCommand]
         public async Task OpenOptions(Window? currentWindow)
         {
@@ -84,6 +93,7 @@ namespace CinemaHub.ViewModels
             currentWindow?.Close();
         }
 
+        //Выйти из системы
         [RelayCommand]
         public async Task LogOut(Window? currentWindow)
         {
@@ -96,6 +106,7 @@ namespace CinemaHub.ViewModels
             currentWindow?.Close();
         }
 
+        //Обновить список фильмов на текущий день
         [RelayCommand]
         public async Task RefreshSeans()
         {
@@ -113,6 +124,7 @@ namespace CinemaHub.ViewModels
                 Films.Clear();
                 foreach (var film in selectedFilms)
                 {
+                    ReadyImg = Helpers.ImgDehash.LoadFromBytes(film.FilmHashedImg);
                     Films.Add(film);
                 }
             });

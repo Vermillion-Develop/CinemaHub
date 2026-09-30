@@ -15,14 +15,15 @@
         <vm:PrimaryWindowViewModel/>
 
     </Design.DataContext>
-    <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,20*, 70*" Background="#3F2D56">
+
+    <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,20*, 70*" Background="#1B1820">
         <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
             <TextBlock VerticalAlignment="Center" FontSize="36">
                 <Run Text="Cinema" Foreground="White"/>
                 <Run Text="Hub" Foreground="Orange"/>
             </TextBlock>
             <TextBlock Text="Фильмы" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
-            <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="Orange" Foreground="White" PlaceholderForeground="white" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
+            <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="#252F36" Foreground="Orange" PlaceholderForeground="#FFBB3E" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
                 <ComboBox.Items>
                     <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{Binding OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
                     <Button Content="Мои билеты" HorizontalAlignment="Stretch" Command="{Binding OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
@@ -39,22 +40,54 @@
 
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <DatePicker SelectedDate="{Binding SelectedDateSeansAxaml}" Grid.Row="1" Background="Red" Width="150" Margin="10,0,10,0"/>
-            <ComboBox SelectedItem="{Binding SelectedTime}" Grid.Row="1" Background="Red" Width="150" ItemsSource="{Binding Times}"/>
-            <Button Grid.Row="1" Content="Обновить" Background="Orange" Foreground="White" Margin="10,0,0,0" Command="{Binding RefreshSeansCommand}"/>
+            <DatePicker SelectedDate="{Binding SelectedDateSeansAxaml}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" Margin="10,0,10,0"/>
+            <ComboBox SelectedItem="{Binding SelectedTime}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" ItemsSource="{Binding Times}"/>
+            <Button Grid.Row="1" Content="Обновить" Background="#D58A00" Foreground="White" Margin="10,0,0,0" Command="{Binding RefreshSeansCommand}"/>
         </StackPanel>
         <Grid Grid.Row="2" Grid.ColumnSpan="3">
-            <ListBox ItemsSource="{Binding Films}">
+            <ListBox ItemsSource="{Binding Films}" Background="#162128">
                 <ListBox.ItemTemplate>
+                    
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding FilmName}"/>
-                            <TextBlock Text="{Binding FilmDescription }"/>
-                        </StackPanel>
+                        <Border Padding="15,15" Background="#11191E" BorderBrush="#E19A19" BorderThickness="1" CornerRadius="8">
+                        <Grid ColumnDefinitions="15*,15*,15*,15*,15*,10*,15*">
+                            <Image Grid.Column="0" Width="150" Height="150" Source="{Binding $parent[ListBox].DataContext.ReadyImg}"/>      
+                            <TextBlock Foreground="White" Grid.Column="1" Text="{Binding FilmName}"/>
+                            <TextBlock Foreground="White" Grid.Column="2" Text="{Binding FilmDescription }"/>
+                            <TextBlock Foreground="White" Grid.Column="3" Text="{Binding FilmVersion }"/>
+                            <TextBlock Foreground="White" Grid.Column="4" Text="{Binding FilmAdultRate }"/>
+                            <TextBlock Foreground="White" Grid.Column="5" Text="{Binding FilmRate }"/>
+                            <StackPanel Grid.Column="6" Orientation="Vertical" VerticalAlignment="Center">
+                                <Button  Content="Купить билет" Foreground="White" Background="#10C210" Margin="0, 10" HorizontalAlignment="Stretch">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                            
+                                            <Setter Property="Background" Value="#6DDA6D" />
+                                            <!-- Цвет текста при наведении, если нужно изменить -->
+                                            <Setter Property="Foreground" Value="white" />
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                                <Button Content="Подробнее" Foreground="White" Background="#4242F9" HorizontalAlignment="Stretch">
+                                     <Button.Styles>
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                            
+                                            <Setter Property="Background" Value="#7373FB" />
+                                            <!-- Цвет текста при наведении, если нужно изменить -->
+                                            <Setter Property="Foreground" Value="white" />
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                            </StackPanel>
+
+                        </Grid>
+                        </Border>
+                        
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
     </Grid>
+
     
 </Window>

@@ -39,7 +39,9 @@ namespace CinemaHubBackground.Controllers
                                       FilmName = f.Name,
                                       FilmDescription = f.Description,
                                       FilmAdultRate = l.Name,
-                                      FilmVersion = c.Name
+                                      FilmVersion = c.Name,
+                                      FilmHashedImg = f.Image,
+                                      FilmRate = f.Rating
 
                                   }).ToListAsync();
             return Ok(filmList);
