@@ -15,6 +15,12 @@ namespace CinemaHubBackground.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Adult_rating> AdultRatings { get; set; }
         public DbSet<Seans> Seanses { get; set; }
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Actor_in_film> ActorsInFilm { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
+        public DbSet<Rewards_in_film> RewardsInFilm { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +32,10 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<Country>().ToTable("Country");
             modelBuilder.Entity<Adult_rating>().ToTable("Adult_rating");
             modelBuilder.Entity<Seans>().ToTable("Seans");
+            modelBuilder.Entity<Actor>().ToTable("Actor");
+            modelBuilder.Entity<Actor_in_film>().ToTable("Actors_in_film");
+            modelBuilder.Entity<Reward>().ToTable("Reward");
+            modelBuilder.Entity<Rewards_in_film>().ToTable("Rewards_in_film");
 
 
         }

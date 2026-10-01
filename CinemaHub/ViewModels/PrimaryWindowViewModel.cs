@@ -47,9 +47,6 @@ namespace CinemaHub.ViewModels
         [ObservableProperty]
         public DateOnly _selectedDateSeans;
 
-        [ObservableProperty]
-
-        public SeansDTO? _selectedSeans;
 
 
         public PrimaryWindowViewModel()
@@ -84,15 +81,29 @@ namespace CinemaHub.ViewModels
             });
         }
 
-        [RelayCommand]
-        public async Task OpenAboutFilm(Window? currentWindow)
+        public async Task OpenAboutFilm(Window? currentWindow, SeansDTO seans)
         {
             AboutFilmWindow about = new AboutFilmWindow()
             {
-                DataContext = new AboutFilmViewModel(SelectedSeans)
+                DataContext = new AboutFilmViewModel(seans)
             };
             about.Show();
             currentWindow?.Hide();
+        }
+
+        [RelayCommand]
+        private async Task OpenAboutFilmFromXaml(object? parameter)
+        {
+            if (parameter is System.Collections.IList values && values.Count == 2)
+            {
+                var window = values[0] as Window;
+                var seans = values[1] as SeansDTO;
+
+                if (seans != null)
+                {
+                    await OpenAboutFilm(window, seans);
+                }
+            }
         }
     }
 }

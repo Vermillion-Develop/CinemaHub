@@ -23,7 +23,7 @@
                 <Run Text="Cinema" Foreground="White"/>
                 <Run Text="Hub" Foreground="Orange"/>
             </TextBlock>
-            <TextBlock Text="{Binding}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding NameFilm}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
             <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="#252F36" Foreground="Orange" PlaceholderForeground="#FFBB3E" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
                 <ComboBox.Items>
                      <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
@@ -41,43 +41,70 @@
 
         </Grid>
         
-        <Grid Grid.Row="2" Background="red" Grid.ColumnSpan="3">
+        <Grid Grid.Row="2" Grid.ColumnSpan="3">
            <Grid ColumnDefinitions="30*, 70*">
-               <StackPanel Grid.Column="0" Orientation="Vertical">
+               <StackPanel Grid.Column="0" Orientation="Vertical" Background="Violet">
                    <Image Source="{Binding ReadyImage}"/>
                    <Label Content="Рейтинг"/>
                    <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}"/>
                    <Button Content="Оценить"/>
                </StackPanel>
-               <StackPanel Grid.Column="1" Orientation="Vertical" Background="Green">
-                   <Grid RowDefinitions="50*,25*,25*" Background="Wheat">
-                       <StackPanel Grid.Row="0" Background="Violet">
-                           <TextBlock Text="{Binding Description}"/>
-                       </StackPanel>
-                       <StackPanel Orientation="Horizontal" Grid.Row="1" Background="Yellow">
-                           <ScrollViewer>
-                               <StackPanel Orientation="Vertical">
-                                   <Image/>
-                                   <TextBlock Text="{Binding}"/>
-                               </StackPanel>
-                           </ScrollViewer>
-                       </StackPanel>
-                       <StackPanel Orientation="Horizontal" Grid.Row="2" Background="Blue">
-                          <ScrollViewer>
-                              <StackPanel Orientation="Vertical">
-                                   <Image/>
-                                   <TextBlock Text="{Binding}"/>
-                                  <TextBlock Text="{Binding}"/>
-                               </StackPanel>
-                          </ScrollViewer> 
-                       </StackPanel>
-                   </Grid>
+               <StackPanel Grid.Column="1" Background="Blue">
+                  <Grid RowDefinitions="50*, 25*, 25*">
+
+                      <ScrollViewer Grid.Row="0">
+                          <TextBlock Text="{Binding Description}"/>
+                      </ScrollViewer>
+                     <ScrollViewer Grid.Row="1">
+                        <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding ActorsInFilm}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
+                                        <Image Width="100" Height="100" 
+                                               Source="{Binding $parent[ListBox].DataContext.ActorImage}" 
+                                               Stretch="UniformToFill"/>
+                                        <TextBlock Text="{Binding ActorFamily}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding ActorName}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding ActorFather}" HorizontalAlignment="Center" FontSize="12" Foreground="Gray" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox> 
+                      </ScrollViewer>
+                      <ScrollViewer Grid.Row="2">
+                        <ListBox Grid.Row="2" 
+                             ItemsSource="{Binding RewardsInFilm}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
+                                        <Image Width="100" Height="100" 
+                                               Source="{Binding $parent[ListBox].DataContext.RewardImage}" 
+                                               Stretch="UniformToFill"/>
+                                        <TextBlock Text="{Binding NameReward}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Year}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox> 
+                      </ScrollViewer>
+                  </Grid>
                </StackPanel>
-           
            </Grid>
-            
         </Grid>
     </Grid>
-
-    
 </Window>

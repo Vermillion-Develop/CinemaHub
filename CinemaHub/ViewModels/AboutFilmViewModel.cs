@@ -1,15 +1,16 @@
-﻿using CinemaHub.Services;
-using CinemaHubShared.Models;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
-using Avalonia.Controls;
-using CinemaHub.Views;
-using System;
-using System.Linq;
+﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using CinemaHub.Services;
+using CinemaHub.Views;
+using CinemaHubShared.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CinemaHub.ViewModels
 {
@@ -24,21 +25,82 @@ namespace CinemaHub.ViewModels
         public Bitmap? _readyImage;
 
         [ObservableProperty]
+        public Bitmap? _actorImage;
+        [ObservableProperty]
+        public Bitmap? _rewardImage;
 
-        public decimal? _rate;
         [ObservableProperty]
 
+        public decimal? _rate;
+
+        [ObservableProperty]
         public string? _description;
 
-        public AboutFilmViewModel(SeansDTO? selectedFilm) 
+        [ObservableProperty]
+        public string? _nameFilm;
+
+        public ObservableCollection<Actor_in_filmDTO> ActorsInFilm { get; } = new();
+        public ObservableCollection<Rewards_in_filmDTO> RewardsInFilm { get; } = new();
+
+        public AboutFilmViewModel(SeansDTO? selectedFilm)
         {
             _apiService = new ApiService();
 
             ReadyImage = Helpers.ImgDehash.LoadFromBytes(selectedFilm?.FilmHashedImg);
-
             Rate = selectedFilm?.FilmRate ?? 0;
             Description = selectedFilm?.FilmDescription ?? string.Empty;
-
+            NameFilm = selectedFilm?.FilmName ?? string.Empty;
+            _ = LoadActorsAsync(selectedFilm);
+            
         }
+
+        private async Task LoadActorsAsync(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                var result = await _apiService.GetActorsInSelectedFilmAsync(selectedFilm);
+
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    ActorsInFilm?.Clear();
+                    foreach (var actor in result)
+                    {
+                        System.Diagnostics.Debug.WriteLine(actor.ActorName);
+                        ActorImage = Helpers.ImgDehash.LoadFromBytes(actor.Actor_image);
+                        ActorsInFilm?.Add(actor);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка загрузки актеров: {ex.Message}");
+            }
+            _ = LoadRewardsAcync(selectedFilm);
+        }
+
+        private async Task LoadRewardsAcync(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                var result = await _apiService.GetRewardsInSelectedFilmAsync(selectedFilm);
+
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    RewardsInFilm?.Clear();
+                    foreach (var reward in result)
+                    {
+                        System.Diagnostics.Debug.WriteLine(reward.NameReward);
+                        RewardImage = Helpers.ImgDehash.LoadFromBytes(reward.RewardImage);
+                        RewardsInFilm?.Add(reward);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка загрузки актеров: {ex.Message}");
+            }
+        }
+
+
     }
 }

@@ -54,19 +54,53 @@ namespace CinemaHub.Services
             }
         }
 
-        //public async Task<List<FilmDisplayDTO>> GetAllFilmsAsync()
-        //{
-        //    try
-        //    {
-        //        var response = await _httpClient.GetFromJsonAsync<List<FilmDisplayDTO>>("api/Films");
-        //        return response ?? new List<FilmDisplayDTO>();
-        //    }
-        //    catch(Exception ex) 
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении фильмов: {ex.Message}");
-        //        return new List<FilmDisplayDTO>();
-        //    }
-        //}     
+       public async Task<List<Actor_in_filmDTO>> GetActorsInSelectedFilmAsync(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                // Отправляем POST запрос, так как на сервере стоит [FromBody]
+                var response = await _httpClient.PostAsJsonAsync("api/Films/actors", selectedFilm);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<List<Actor_in_filmDTO>>();
+                    return result ?? new List<Actor_in_filmDTO>();
+                }
+
+                return new List<Actor_in_filmDTO>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении актеров: {ex.Message}");
+                return new List<Actor_in_filmDTO>();
+            }
+        }
+
+        public async Task<List<Rewards_in_filmDTO>> GetRewardsInSelectedFilmAsync(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Films/rewards", selectedFilm);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<List<Rewards_in_filmDTO>>();
+                    return result ?? new List<Rewards_in_filmDTO>();
+                }
+                return new List<Rewards_in_filmDTO>();
+            }
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении наград: {ex.Message}");
+                return new List<Rewards_in_filmDTO>();
+            }
+        }
+
+
+
+
+
+
+
 
         public async Task <List<SeansDTO>> GetAllSeansByDateAsync(DateOnly date)
         {

@@ -10,8 +10,9 @@ namespace CinemaHubShared.Models
         public string? Family { get; set; }
         public string? Name { get; set; }
         public string? Father { get; set; }
-        public int? GenderId { get; set; }
-        public int? NationId { get; set; }
+        public int? FK_Gender { get; set; }
+        public int? FK_Nation { get; set; }
         public DateOnly? DateBirthday { get; set; }
+        public byte[]? Actor_image { get; set; }
     }
 }
