@@ -17,6 +17,7 @@ namespace CinemaHub.ViewModels
     {
         private readonly IApiService _apiService;
 
+
         public ObservableCollection<SeansDTO> Films { get; } = new();
 
         [ObservableProperty]
@@ -46,6 +47,10 @@ namespace CinemaHub.ViewModels
         [ObservableProperty]
         public DateOnly _selectedDateSeans;
 
+        [ObservableProperty]
+
+        public SeansDTO? _selectedSeans;
+
 
         public PrimaryWindowViewModel()
         {
@@ -53,63 +58,12 @@ namespace CinemaHub.ViewModels
             SelectedTime = Times.FirstOrDefault();
         }
 
-      
-        //Открыть меню "Фильмы"
-        [RelayCommand]
-        public async Task OpenFilms(Window? currentWindow)
-        {
-            
-            PrimaryWindow primary = new PrimaryWindow
-            {
-                DataContext = new PrimaryWindowViewModel()
-            };
-            primary.Show();
-            currentWindow?.Close();
-        }
-
-        //Открыть меню "Мои билеты"
-        [RelayCommand]
-        public async Task OpenMyTickets(Window? currentWindow)
-        {
-            
-            PrimaryWindow primary = new PrimaryWindow
-            {
-                DataContext = new PrimaryWindowViewModel()
-            };
-            primary.Show();
-            currentWindow?.Close();
-        }
-
-        //Открыть меню опций
-        [RelayCommand]
-        public async Task OpenOptions(Window? currentWindow)
-        {
-            
-            PrimaryWindow primary = new PrimaryWindow
-            {
-                DataContext = new PrimaryWindowViewModel()
-            };
-            primary.Show();
-            currentWindow?.Close();
-        }
-
-        //Выйти из системы
-        [RelayCommand]
-        public async Task LogOut(Window? currentWindow)
-        {
-            
-            StartWindow start = new StartWindow
-            {
-                DataContext = new LoginViewModel()
-            };
-            start.Show();
-            currentWindow?.Close();
-        }
 
         //Обновить список фильмов на текущий день
         [RelayCommand]
         public async Task RefreshSeans()
         {
+            
             if (!SelectedDateSeansAxaml.HasValue)
             {
                 return;
@@ -128,6 +82,17 @@ namespace CinemaHub.ViewModels
                     Films.Add(film);
                 }
             });
+        }
+
+        [RelayCommand]
+        public async Task OpenAboutFilm(Window? currentWindow)
+        {
+            AboutFilmWindow about = new AboutFilmWindow()
+            {
+                DataContext = new AboutFilmViewModel(SelectedSeans)
+            };
+            about.Show();
+            currentWindow?.Hide();
         }
     }
 }

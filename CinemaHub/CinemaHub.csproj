@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AboutFilmWindow.axaml.cs">
+      <DependentUpon>AboutFilmWindow.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\PrimaryWindow.axaml.cs">
       <DependentUpon>PrimaryWindow.axaml</DependentUpon>
     </Compile>
