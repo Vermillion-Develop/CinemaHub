@@ -19,6 +19,9 @@ namespace CinemaHubBackground.Data
         public DbSet<Actor_in_film> ActorsInFilm { get; set; }
         public DbSet<Reward> Rewards { get; set; }
         public DbSet<Rewards_in_film> RewardsInFilm { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Comments_in_film> CommentsInFilm { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
 
 
@@ -32,10 +35,16 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<Country>().ToTable("Country");
             modelBuilder.Entity<Adult_rating>().ToTable("Adult_rating");
             modelBuilder.Entity<Seans>().ToTable("Seans");
+
             modelBuilder.Entity<Actor>().ToTable("Actor");
             modelBuilder.Entity<Actor_in_film>().ToTable("Actors_in_film");
+
             modelBuilder.Entity<Reward>().ToTable("Reward");
             modelBuilder.Entity<Rewards_in_film>().ToTable("Rewards_in_film");
+
+            modelBuilder.Entity<Comment>().ToTable("Comment");
+            modelBuilder.Entity<Comments_in_film>().ToTable("Comments_in_film");
+            modelBuilder.Entity<Role>().ToTable("Role");
 
 
         }

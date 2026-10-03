@@ -41,6 +41,7 @@ namespace CinemaHub.ViewModels
 
         public ObservableCollection<Actor_in_filmDTO> ActorsInFilm { get; } = new();
         public ObservableCollection<Rewards_in_filmDTO> RewardsInFilm { get; } = new();
+        public ObservableCollection<Comments_in_filmDTO> CommentsInFilm { get; } = new();
 
         public AboutFilmViewModel(SeansDTO? selectedFilm)
         {
@@ -75,6 +76,7 @@ namespace CinemaHub.ViewModels
             {
                 Debug.WriteLine($"Ошибка загрузки актеров: {ex.Message}");
             }
+            
             _ = LoadRewardsAcync(selectedFilm);
         }
 
@@ -99,8 +101,31 @@ namespace CinemaHub.ViewModels
             {
                 Debug.WriteLine($"Ошибка загрузки актеров: {ex.Message}");
             }
+            System.Diagnostics.Debug.WriteLine(selectedFilm?.FK_Film);
+            _ = LoadCommentsAcyns(selectedFilm);
+
         }
 
-
+        private async Task LoadCommentsAcyns(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                var result = await _apiService.GetCommentsInSelectedFilmAsync(selectedFilm);
+                System.Diagnostics.Debug.WriteLine(result.Count);
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    CommentsInFilm?.Clear();
+                    foreach (var comment in result)
+                    {
+                        CommentsInFilm?.Add(comment);
+                        System.Diagnostics.Debug.WriteLine(comment.UserName);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка загрузки комментариев: {ex.Message}");
+            }
+        }
     }
 }

@@ -98,6 +98,37 @@ namespace CinemaHubBackground.Controllers
                                     }).ToListAsync();
             return Ok(rewardList);
         }
-        
+
+        [HttpPost("comments")]
+        public async Task<ActionResult<IEnumerable<Comments_in_filmDTO>>> GetCommentsInSelectedFilm([FromBody] SeansDTO? selectedFilm)
+        {
+
+            if (selectedFilm == null)
+            {
+                return BadRequest();
+            }
+
+            var commentList = await (from comlist in _context.CommentsInFilm
+                                     join z in _context.Comments on comlist.FK_Comment equals z.Id
+                                     join fil in _context.Films on comlist.FK_Film equals fil.Id
+                                     join usr in _context.Users on comlist.FK_User equals usr.Id
+                                     join rl in _context.Roles on usr.FK_Role equals rl.Id
+                                     where comlist.FK_Film == selectedFilm.FK_Film
+                                     select new Comments_in_filmDTO()
+                                     {
+                                         Id = comlist.Id,
+                                         FK_Film = comlist.FK_Film,
+                                         FK_Comment = comlist.FK_Comment,
+                                         FK_User = comlist.FK_User,
+
+                                         UserFamily = usr.Family,
+                                         UserName = usr.Name,
+                                         UserRole = rl.Name,
+                                         CommentDescription = z.Description,
+                                         CommentDate = z.CommentDate
+
+                                     }).ToListAsync();
+            return Ok(commentList);
+        }
     }
 }

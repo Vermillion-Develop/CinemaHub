@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:helpers="clr-namespace:CinemaHub.ViewModels"
         xmlns:System="clr-namespace:System;assembly=System.Runtime"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" Height="1250"
         x:Class="CinemaHub.Views.AboutFilmWindow"
         x:DataType="vm:AboutFilmViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -17,94 +17,122 @@
 
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,20*, 70*" Background="#1B1820">
-        <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
-            <TextBlock VerticalAlignment="Center" FontSize="36">
-                <Run Text="Cinema" Foreground="White"/>
-                <Run Text="Hub" Foreground="Orange"/>
-            </TextBlock>
-            <TextBlock Text="{Binding NameFilm}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
-            <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="#252F36" Foreground="Orange" PlaceholderForeground="#FFBB3E" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
-                <ComboBox.Items>
-                     <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
-                    <Button Content="Мои билеты" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenMyTicketsCommand}" CommandParameter="{Binding $parent[Window]}"/>
-                    <Button Content="Настройки" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenOptionsCommand}" CommandParameter="{Binding $parent[Window]}"/>
-                    <Button Content="Выход" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.LogOutCommand}" CommandParameter="{Binding $parent[Window]}"/>
-                </ComboBox.Items>
-                <ComboBox.Styles>
-                    <Style Selector="ComboBoxItem">
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                 </ComboBox.Styles>
-            </ComboBox>
-
-        </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+    
+        <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,50*,30*" Background="#1B1820">
+                <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
+                    <TextBlock VerticalAlignment="Center" FontSize="36">
+                        <Run Text="Cinema" Foreground="White"/>
+                        <Run Text="Hub" Foreground="Orange"/>
+                    </TextBlock>
+                    <TextBlock Text="{Binding NameFilm}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="Orange" VerticalAlignment="Center"/>
+                    <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="#252F36" Foreground="Orange" PlaceholderForeground="#FFBB3E" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
+                        <ComboBox.Items>
+                             <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                            <Button Content="Мои билеты" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenMyTicketsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                            <Button Content="Настройки" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenOptionsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                            <Button Content="Выход" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.LogOutCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                        </ComboBox.Items>
+                        <ComboBox.Styles>
+                            <Style Selector="ComboBoxItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                         </ComboBox.Styles>
+                    </ComboBox>
+                </Grid>
         
-        <Grid Grid.Row="2" Grid.ColumnSpan="3">
-           <Grid ColumnDefinitions="30*, 70*">
-               <StackPanel Grid.Column="0" Orientation="Vertical" Background="Violet">
-                   <Image Source="{Binding ReadyImage}"/>
-                   <Label Content="Рейтинг"/>
-                   <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}"/>
-                   <Button Content="Оценить"/>
-               </StackPanel>
-               <StackPanel Grid.Column="1" Background="Blue">
-                  <Grid RowDefinitions="50*, 25*, 25*">
+                <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                   <Grid ColumnDefinitions="30*, 70*">
+                       
+                       <StackPanel Grid.Column="0" Orientation="Vertical" Background="Violet">
+                           <Image Source="{Binding ReadyImage}"/>
+                           <Label Content="Рейтинг фильма" HorizontalAlignment="Center" FontSize="20"/>
+                           <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}" HorizontalAlignment="Center" FontSize="20"/>
+                           <Button Background="Orange" Foreground="White" Content="Оценить" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+                       </StackPanel>
+                       <StackPanel Grid.Column="1" Background="Blue">
+                          <Grid RowDefinitions="50*, 25*, 25*">
+                              <ScrollViewer Grid.Row="0">
+                                  <StackPanel MinHeight="150">
+                                    <TextBlock Text="Описание: "/>
+                                    <TextBlock Text="{Binding Description}"/>  
+                                  </StackPanel>
+                              </ScrollViewer>
+                             <ScrollViewer Grid.Row="1">
+                                <StackPanel Grid.Row="1" Orientation="Vertical">
+                                    <TextBlock Text="Актеры" Padding="0,20"/>
+                                    <ListBox Grid.Row="1" 
+                                     ItemsSource="{Binding ActorsInFilm}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
+                                                <Image Width="100" Height="100" 
+                                                       Source="{Binding $parent[ListBox].DataContext.ActorImage}" 
+                                                       Stretch="UniformToFill"/>
+                                                <TextBlock Text="{Binding ActorFamily}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding ActorName}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding ActorFather}" HorizontalAlignment="Center" FontSize="12" Foreground="Gray" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox> 
+                                </StackPanel>
+                              </ScrollViewer>
+                              <ScrollViewer Grid.Row="2">
+                                  <StackPanel Grid.Row="2" Orientation="Vertical">
+                                    <TextBlock Text="Награды" Padding="0,20"/>
+                                <ListBox Grid.Row="2" 
+                                     ItemsSource="{Binding RewardsInFilm}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
+                                                <Image Width="100" Height="100" 
+                                                       Source="{Binding $parent[ListBox].DataContext.RewardImage}" 
+                                                       Stretch="UniformToFill"/>
+                                                <TextBlock Text="{Binding NameReward}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding Year}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox> 
+                                </StackPanel>
+                              </ScrollViewer>
+                          </Grid>
+                       </StackPanel>
+                   </Grid>
+                </Grid>
 
-                      <ScrollViewer Grid.Row="0">
-                          <TextBlock Text="{Binding Description}"/>
-                      </ScrollViewer>
-                     <ScrollViewer Grid.Row="1">
-                        <ListBox Grid.Row="1" 
-                             ItemsSource="{Binding ActorsInFilm}"
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
-                                        <Image Width="100" Height="100" 
-                                               Source="{Binding $parent[ListBox].DataContext.ActorImage}" 
-                                               Stretch="UniformToFill"/>
-                                        <TextBlock Text="{Binding ActorFamily}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding ActorName}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding ActorFather}" HorizontalAlignment="Center" FontSize="12" Foreground="Gray" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox> 
-                      </ScrollViewer>
-                      <ScrollViewer Grid.Row="2">
-                        <ListBox Grid.Row="2" 
-                             ItemsSource="{Binding RewardsInFilm}"
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Width="120" Margin="5,0,5,0">
-                                        <Image Width="100" Height="100" 
-                                               Source="{Binding $parent[ListBox].DataContext.RewardImage}" 
-                                               Stretch="UniformToFill"/>
-                                        <TextBlock Text="{Binding NameReward}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Year}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox> 
-                      </ScrollViewer>
-                  </Grid>
-               </StackPanel>
-           </Grid>
+                <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="pink">             
+                   <ListBox ItemsSource="{Binding CommentsInFilm}" Background="Red">
+                       <ListBox.ItemTemplate>
+                           <DataTemplate>
+                               <StackPanel>
+                                 <TextBlock>
+                                     <Run Text="{Binding UserName}"/>
+                                     <Run Text="{Binding UserFamily}"/>
+                                 </TextBlock>  
+                                 <TextBlock Text="{Binding CommentDescription}"/>
+                                 <TextBlock Text="{Binding CommentDate}"/>
+                               </StackPanel>
+                           </DataTemplate>
+                       </ListBox.ItemTemplate>
+                   </ListBox>
+                </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Window>

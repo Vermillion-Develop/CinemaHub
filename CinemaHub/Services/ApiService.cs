@@ -95,13 +95,6 @@ namespace CinemaHub.Services
             }
         }
 
-
-
-
-
-
-
-
         public async Task <List<SeansDTO>> GetAllSeansByDateAsync(DateOnly date)
         {
             try
@@ -114,6 +107,25 @@ namespace CinemaHub.Services
             {
                 System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении фильмов: {ex.Message}");
                 return new List<SeansDTO>();
+            }
+        }
+
+        public async Task <List<Comments_in_filmDTO>> GetCommentsInSelectedFilmAsync(SeansDTO? selectedFilm)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Films/comments", selectedFilm);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<List<Comments_in_filmDTO>>();
+                    return result ?? new List<Comments_in_filmDTO>();
+                }
+                return new List<Comments_in_filmDTO>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении комментариев: {ex.Message}");
+                return new List<Comments_in_filmDTO>();
             }
         }
     }
