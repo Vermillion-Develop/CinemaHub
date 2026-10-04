@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CinemaHubShared.Models;
 using Avalonia.Controls.Documents;
+using System.Diagnostics;
 
 namespace CinemaHub.Services
 {
@@ -96,13 +97,23 @@ namespace CinemaHub.Services
             }
         }
 
-        public async Task <List<SeansDTO>> GetAllSeansByDateAsync(DateOnly date)
+        public async Task<List<SeansDTO>> GetAllSeansByDateAsync(DateOnly date, Zal? selectedZal)
         {
             try
             {
-                string formattedDate = date.ToString("yyyy-MM-dd");
-                var response = await _httpClient.GetFromJsonAsync<List<SeansDTO>>($"api/Films?date={formattedDate}");
-                return response ?? new List<SeansDTO>();
+                var filmData = new FilmRequest(){ DateFilm = date, ZalId = selectedZal?.Id};
+                var response = await _httpClient.PostAsJsonAsync("api/Films/getFilms", filmData);
+                if (response.IsSuccessStatusCode)
+                {
+                   var result = await response.Content.ReadFromJsonAsync<List<SeansDTO>>();
+
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    return new List<SeansDTO>();
+                }
+                return new List<SeansDTO>();
             }
             catch (Exception ex)
             {
@@ -144,6 +155,78 @@ namespace CinemaHub.Services
                 return false;
             }
         }
-        
+
+        public async Task<bool> MakeACommenTheFilmAsync(int? userId, int? filmId, string? commentDescription, DateTime? commentDate)
+        {
+            try
+            {
+                var commentData = new CommentUserRequest() { FilmId = filmId, UserId = userId, CommentDescription = commentDescription, CommentDate = commentDate };
+                var response = await _httpClient.PostAsJsonAsync("api/Films/commentaries", commentData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка оставления комментария: {ex.Message}");
+                return false;
+            }
+        }
+        public async Task<List<Ticket_type>> GetTicketTypesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<List<Ticket_type>>("api/Films/ticketType");
+                if (response == null)
+                {
+                    return new List<Ticket_type>();
+                }
+                return response;
+            }
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine("Пупупу.... типы билетов пупупу...");
+                return new List<Ticket_type>();
+            }
+            
+        }
+
+        public async Task<List<Zal>> GetZalsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<List<Zal>>("api/Films/zals");
+                if (response == null)
+                {
+                    return new List<Zal>();
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Пупупу.... залы пупупу...");
+                return new List<Zal>();
+            }
+
+        }
+
+        public async Task<List<Mesta_in_zalDTO>> GetMestaSelectedZalAsync(Zal? selectedZal)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Films/mestos", selectedZal);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<List<Mesta_in_zalDTO>>();
+                    return result ?? new List<Mesta_in_zalDTO>();
+                }
+                return new List<Mesta_in_zalDTO>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сети при получении мест: {ex.Message}");
+                return new List<Mesta_in_zalDTO>();
+            }
+        }
+
+
     }
 }

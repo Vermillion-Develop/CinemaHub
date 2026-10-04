@@ -17,6 +17,9 @@ namespace CinemaHub.ViewModels
     {
         private readonly IApiService _apiService;
 
+        [ObservableProperty]
+        public string? _textDescription;
+
         private SeansDTO? _seans;
         public AddNewCommentViewModel(SeansDTO? selectedSeans)
         {
@@ -26,6 +29,28 @@ namespace CinemaHub.ViewModels
         }
 
         public async Task GoBackToFilm(Window? currentWindow)
+        {
+            currentWindow?.Close();
+        }
+
+        [RelayCommand]
+        
+        public async Task AddCommentTheFilmAsync(Window? currentWindow)
+        {
+            if (_seans == null)
+            {
+                System.Diagnostics.Debug.WriteLine("какой то прикольчик");
+                return;
+            }
+
+            var result = await _apiService.MakeACommenTheFilmAsync(UserSession.Current?.Id, _seans.FK_Film, TextDescription, DateTime.UtcNow);
+            System.Diagnostics.Debug.WriteLine(result);
+            currentWindow?.Close();
+        }
+
+        [RelayCommand]
+
+        public async Task GoBackToAboutFilm(Window? currentWindow)
         {
             currentWindow?.Close();
         }

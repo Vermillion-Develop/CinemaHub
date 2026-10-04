@@ -10,6 +10,7 @@ using CinemaHub.Views;
 using System;
 using System.Linq;
 using Avalonia.Media.Imaging;
+using System.Diagnostics;
 
 namespace CinemaHub.ViewModels
 {
@@ -19,6 +20,7 @@ namespace CinemaHub.ViewModels
 
 
         public ObservableCollection<SeansDTO> Films { get; } = new();
+        public ObservableCollection<Zal> Zals { get; } = new();
 
         [ObservableProperty]
         public List<TimeSpan> _times = new List<TimeSpan>()
@@ -39,6 +41,9 @@ namespace CinemaHub.ViewModels
         public TimeSpan _selectedTime;
 
         [ObservableProperty]
+        public Zal? _selectedZal;
+
+        [ObservableProperty]
         public DateTimeOffset? _selectedDateSeansAxaml = DateTimeOffset.Now;
 
         [ObservableProperty]
@@ -53,10 +58,9 @@ namespace CinemaHub.ViewModels
         {
             _apiService = new ApiService();
             SelectedTime = Times.FirstOrDefault();
+            _ = GetZalsAsync();
         }
 
-
-        //Обновить список фильмов на текущий день
         [RelayCommand]
         public async Task RefreshSeans()
         {
@@ -68,7 +72,7 @@ namespace CinemaHub.ViewModels
 
             SelectedDateSeans = DateOnly.FromDateTime(SelectedDateSeansAxaml.Value.DateTime);
 
-            var selectedFilms = await _apiService.GetAllSeansByDateAsync(SelectedDateSeans);
+            var selectedFilms = await _apiService.GetAllSeansByDateAsync(SelectedDateSeans, SelectedZal);
 
             Avalonia.Threading.Dispatcher.UIThread.Post(() =>
             {
@@ -79,6 +83,16 @@ namespace CinemaHub.ViewModels
                     Films.Add(film);
                 }
             });
+        }
+
+        public async Task GetZalsAsync()
+        {
+            Zals.Clear();
+            var result = await _apiService.GetZalsAsync();
+            foreach (var zal in result)
+            {
+                Zals.Add(zal);
+            }
         }
 
         public async Task OpenAboutFilm(Window? currentWindow, SeansDTO seans)
@@ -104,6 +118,16 @@ namespace CinemaHub.ViewModels
                     await OpenAboutFilm(window, seans);
                 }
             }
+        }
+
+        [RelayCommand]
+        public async Task OpenBuyTicketAsync(SeansDTO seans)
+        {
+            BuyATicketWindow buy = new BuyATicketWindow()
+            {
+                DataContext = new BuyATicketViewModel(seans, SelectedZal)
+            };
+            buy.Show();
         }
     }
 }

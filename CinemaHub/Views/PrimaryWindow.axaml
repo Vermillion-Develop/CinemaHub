@@ -42,7 +42,8 @@
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
             <DatePicker SelectedDate="{Binding SelectedDateSeansAxaml}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" Margin="10,0,10,0"/>
-            <ComboBox SelectedItem="{Binding SelectedTime}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" ItemsSource="{Binding Times}"/>
+            <ComboBox SelectedItem="{Binding SelectedTime, Mode=TwoWay}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" ItemsSource="{Binding Times}"/>
+            <ComboBox SelectedItem="{Binding SelectedZal, Mode=TwoWay}" Grid.Row="1" Background="#252F36" Foreground="#FFBB3E" Width="150" ItemsSource="{Binding Zals}" DisplayMemberBinding="{Binding Name}" PlaceholderText="Выберите зал"/>
             <Button Grid.Row="1" Content="Обновить" Background="#D58A00" Foreground="White" Margin="10,0,0,0" Command="{Binding RefreshSeansCommand}"/>
         </StackPanel>
         <Grid Grid.Row="2" Grid.ColumnSpan="3">
@@ -59,7 +60,7 @@
                             <TextBlock Foreground="White" Grid.Column="4" Text="{Binding FilmAdultRate }" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <TextBlock Foreground="White" Grid.Column="5" Text="{Binding FilmRate }" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="6" Orientation="Vertical" VerticalAlignment="Center">
-                                <Button  Content="Купить билет" Foreground="White" Background="#10C210" Margin="0, 10" HorizontalAlignment="Stretch">
+                                <Button  Content="Купить билет" Foreground="White" Background="#10C210" Margin="0, 10" HorizontalAlignment="Stretch" Command="{Binding $parent[ListBox].DataContext.OpenBuyTicketAsync}" CommandParameter="{Binding}">
                                     <Button.Styles>
                                         <Style Selector="Button:pointerover /template/ ContentPresenter">
                                             

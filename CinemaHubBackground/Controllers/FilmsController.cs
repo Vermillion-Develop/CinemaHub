@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CinemaHubBackground.Controllers
 {
@@ -20,14 +22,20 @@ namespace CinemaHubBackground.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost("getFilms")]
 
-        public async Task<ActionResult<IEnumerable<SeansDTO>>> GetSeansByDate([FromQuery] DateOnly date)
+        public async Task<ActionResult<IEnumerable<SeansDTO>>> GetSeansByDate([FromBody] FilmRequest request)
         {
-            var filmList = await (from s in _context.Seanses join f in _context.Films on s.FK_Film equals f.Id 
+            if (request == null) 
+            {
+                Debug.WriteLine("Хуйня реквест");
+                return BadRequest();
+            }
+            Debug.WriteLine("Реквест не хуйня");
+            var filmList = await (from s in _context.Seanses join f in _context.Films on s.FK_Film equals f.Id
                                   join c in _context.Countries on f.FK_Country_Version equals c.Id
                                   join l in _context.AdultRatings on f.FK_Adult_Rating equals l.Id
-                                  where s.Day == date select new SeansDTO()
+                                  where s.Day == request.DateFilm && s.FK_Zal == request.ZalId select new SeansDTO()
                                   {
                                       Id = s.Id,
                                       FK_Film = s.FK_Film,
@@ -49,33 +57,33 @@ namespace CinemaHubBackground.Controllers
         [HttpPost("actors")]
         public async Task<ActionResult<IEnumerable<Actor_in_filmDTO>>> GetActorsInSelectedFilm([FromBody] SeansDTO? selectedFilm)
         {
-            if(selectedFilm == null)
+            if (selectedFilm == null)
             {
                 return BadRequest();
             }
 
             var actorsFilms = await (from actLst in _context.ActorsInFilm
-                                      join act in _context.Actors on actLst.FK_Actor equals act.Id
+                                     join act in _context.Actors on actLst.FK_Actor equals act.Id
                                      where actLst.FK_Film == selectedFilm.FK_Film
-                                      select new Actor_in_filmDTO()
-                                      {
-                                          Id = actLst.Id,
-                                          FK_Film = actLst.FK_Film,
-                                          FK_Actor = actLst.FK_Actor,
+                                     select new Actor_in_filmDTO()
+                                     {
+                                         Id = actLst.Id,
+                                         FK_Film = actLst.FK_Film,
+                                         FK_Actor = actLst.FK_Actor,
 
-                                          Actor_image = act.Actor_image,
-                                          ActorFamily = act.Family,
-                                          ActorName = act.Name,
-                                          ActorFather = act.Father
+                                         Actor_image = act.Actor_image,
+                                         ActorFamily = act.Family,
+                                         ActorName = act.Name,
+                                         ActorFather = act.Father
 
-                                      }).ToListAsync();
+                                     }).ToListAsync();
             return Ok(actorsFilms);
         }
 
         [HttpPost("rewards")]
         public async Task<ActionResult<IEnumerable<Rewards_in_filmDTO>>> GetRewardsInSelectedFilm([FromBody] SeansDTO? selectedFilm)
         {
-            if(selectedFilm == null)
+            if (selectedFilm == null)
             {
                 return BadRequest();
             }
@@ -156,5 +164,87 @@ namespace CinemaHubBackground.Controllers
                 return StatusCode(500, new { message = $"Ошибка на сервере: {ex.Message}" });
             }
         }
-    }
+
+        [HttpGet("ticketType")]
+
+        public async Task<ActionResult<IEnumerable<Ticket_type>>> GetTicketsTypes()
+        {
+           var ticketTypeList = await (from s in _context.Ticket_types select s).ToListAsync();
+           return Ok(ticketTypeList);
+        }
+
+        [HttpPost("commentaries")]
+        public async Task<IActionResult> AddNewComment([FromBody] CommentUserRequest? commentUserRequest)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var comment = new Comment
+                {
+                    Description = commentUserRequest?.CommentDescription,
+                    CommentDate = commentUserRequest?.CommentDate
+                };
+                _context.Comments.Add(comment);
+                await _context.SaveChangesAsync();
+
+                var commentsInFilm = new Comments_in_film
+                {
+                    FK_Film = commentUserRequest?.FilmId,
+                    FK_Comment = comment.Id,
+                    FK_User = commentUserRequest?.UserId,
+                };
+                _context.CommentsInFilm.Add(commentsInFilm);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return Ok(new { message = "Комментарий оставлен!" });
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = $"Ошибка на сервере: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("zals")]
+
+        public async Task<ActionResult<IEnumerable<Zal>>> GetZals()
+        {
+            var zalsList = await (from z in _context.Zals select z).ToListAsync();
+            return Ok(zalsList);
+        }
+
+        [HttpPost("mestos")]
+        public async Task<ActionResult<IEnumerable<Mesta_in_zalDTO>>> GetMesta([FromBody] Zal? selectedZal) 
+        {
+            if(selectedZal == null)
+            {
+                return BadRequest();
+            }
+
+            var mestList = await (from z in _context.MestosInZals
+                                  join
+                                  m in _context.Mestos on z.FK_Mesto equals m.Id
+                                  join
+                                  x in _context.Zals on z.FK_Zal equals x.Id
+                                  join
+                                  s in _context.MestoStatuses on z.FK_Status_mesto equals s.Id
+                                  join
+                                  r in _context.MestoRowes on m.FK_Row equals r.Id
+                                  where z.FK_Zal == selectedZal.Id
+                                  select new Mesta_in_zalDTO()
+                                  {
+                                    Id = z.Id,
+                                    FK_Mesto = z.FK_Mesto,
+                                    FK_Zal = z.FK_Zal,
+
+                                    MestoName = r.Name,
+                                    MestoStatus = s.Name
+
+                                  }).ToListAsync();
+            return Ok(mestList);
+        }
+
+    }  
 }

@@ -50,7 +50,7 @@
                            <Label Content="Рейтинг фильма" Foreground="Orange" HorizontalAlignment="Center" FontSize="20"/>
                            <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}" Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
                            <Button Background="Orange" Foreground="White" Content="Оценить" Margin="0,10" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="220" Command="{Binding OpenRateWindowCommand}" CommandParameter="{Binding SelectedSeans}"/>
-                           <Button Background="Orange" Foreground="White" Content="Оставить комментарий" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="220" />
+                           <Button Background="Orange" Foreground="White" Content="Оставить комментарий" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="220" Command="{Binding OpenNewCommentWindowCommand}" CommandParameter="{Binding SelectedSeans}" />
                        </StackPanel>
                        <StackPanel Grid.Column="1" Background="#0A1225">
                           <Grid RowDefinitions="50*, 25*, 25*">

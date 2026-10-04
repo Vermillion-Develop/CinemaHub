@@ -23,6 +23,14 @@ namespace CinemaHubBackground.Data
         public DbSet<Comments_in_film> CommentsInFilm { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Rates_Film> RatesFilm { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket_type> Ticket_types { get; set; }
+        public DbSet<Zal> Zals { get; set; }
+        public DbSet<Mesto_status> MestoStatuses { get; set; }
+        public DbSet<Mesto_row> MestoRowes { get; set; }
+        public DbSet<Mesto> Mestos { get; set; }
+        public DbSet<Mesta_in_zal> MestosInZals { get; set; }
+        public DbSet<User_tickets> UserTickets { get; set; }
 
 
 
@@ -47,8 +55,17 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<Comments_in_film>().ToTable("Comments_in_film");
             modelBuilder.Entity<Role>().ToTable("Role");
 
-            modelBuilder.Entity<Rates_Film>().ToTable("Users_rates");
+            modelBuilder.Entity<Ticket_type>().ToTable("Ticket_type");
+            modelBuilder.Entity<Ticket>().ToTable("Ticket");
 
+            modelBuilder.Entity<Zal>().ToTable("Zal");
+
+            modelBuilder.Entity<Mesto_row>().ToTable("Mesto_row");
+            modelBuilder.Entity<Mesto_status>().ToTable("Mesto_status");
+            modelBuilder.Entity<Mesto>().ToTable("Mesto");
+            modelBuilder.Entity<Mesta_in_zal>().ToTable("Mesta_in_zal");
+
+            modelBuilder.Entity<User_tickets>().ToTable("User_tickets");
 
         }
     }

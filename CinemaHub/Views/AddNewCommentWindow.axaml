@@ -17,10 +17,19 @@
 
     <Grid RowDefinitions="25*, 75*">
         <Grid Grid.Row="0" Background="#0D1730">
-            <TextBlock Text="Оценить фильм" Foreground="Orange" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="Оставить комментарий" Foreground="Orange" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1">
-           
+            <TextBlock Text="Текст комментария:"/>
+           <StackPanel Orientation="Vertical">
+               <ScrollViewer VerticalScrollBarVisibility="Auto">
+                   <TextBox Text="{Binding TextDescription}" MinHeight="150" MaxHeight="150" TextWrapping="Wrap"/>
+               </ScrollViewer>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Отправить" Command="{Binding AddCommentTheFilmCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Назад" Command="{Binding GoBackToAboutFilmCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                </StackPanel>
+           </StackPanel>
         </Grid>
 
     </Grid>

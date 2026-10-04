@@ -4,10 +4,10 @@ using System.Text;
 
 namespace CinemaHubShared.Models
 {
-    public class Comment
+    public class User_tickets
     {
         public int Id { get; set; }
-        public string? Description { get; set; }
-        public DateTime? CommentDate { get; set; }
+        public int? FK_User { get; set; }
+        public int? FK_Ticket { get; set; }
     }
 }

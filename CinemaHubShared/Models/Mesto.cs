@@ -7,7 +7,7 @@ namespace CinemaHubShared.Models
     public class Mesto
     {
         public int Id { get; set; }
-        public int? RowId { get; set; }
-        public int? StatusId { get; set; }
+        public int? FK_Row { get; set; }
+
     }
 }

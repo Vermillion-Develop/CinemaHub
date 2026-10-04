@@ -26,7 +26,7 @@
             </StackPanel>
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Оценить" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding AddNewRateCommand}"/>
+                    <Button Content="Оценить" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding AddNewRateCommand}" CommandParameter="{Binding $parent[Window]}"/>
                     <Button Content="Назад" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding GoBackToFilmCommand}" CommandParameter="{Binding $parent[Window]}" />
                 </StackPanel>
             </Grid>

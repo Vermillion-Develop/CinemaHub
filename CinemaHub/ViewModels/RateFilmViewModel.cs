@@ -37,7 +37,7 @@ namespace CinemaHub.ViewModels
 
         [RelayCommand]
 
-        public async Task AddNewRateAsync()
+        public async Task AddNewRateAsync(Window? currentWindow)
         {
             if (_seans == null || SelectedRate == null)
             {
@@ -46,6 +46,7 @@ namespace CinemaHub.ViewModels
             }
             var response = await _apiService.RateTheFilmAsync(_seans?.FK_Film, UserSession.Current?.Id, SelectedRate);
             System.Diagnostics.Debug.WriteLine(response);
+            currentWindow?.Close();
         }
 
         [RelayCommand]

@@ -9,10 +9,10 @@ namespace CinemaHubShared.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public decimal? Cost { get; set; }
-        public int? TypeTicketId { get; set; }
-        public int? ZalId { get; set; }
-        public int? TicketStatusId { get; set; }
+        public int? FK_Type_ticket { get; set; }
+        public int? FK_Zal { get; set; }
+        public int? FK_Ticket_status { get; set; }
         public DateTime? DateSold { get; set; }
-        public int? SeansId { get; set; }
+        public int? FK_Seans { get; set; }
     }
 }
