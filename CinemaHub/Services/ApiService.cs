@@ -227,6 +227,35 @@ namespace CinemaHub.Services
             }
         }
 
+        public async Task<bool> BuyATicketAsync(SeansDTO? seans, decimal? cost, int? typeTicket, int? selectedZal, int? ticketStatus, DateTime? date,  int? user, int? selectedMesto)
+        {
+            try
+            {
+                var buyData = new BuyTicketRequest { NameTicket = seans?.FilmName, CostTicket = cost, FK_Type_ticket = typeTicket, FK_Zal = selectedZal, FK_Ticket_status = ticketStatus, DateSold = date, UserId = user, Mesto = selectedMesto };
+                var response = await _httpClient.PostAsJsonAsync("api/Films/buyTicket", buyData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка сети при покупк билета: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<List<User_ticketsDTO>> GetUserTicketsAsync(int? userId)
+        {
+            try
+            {
+                if (userId == null) return new List<User_ticketsDTO>();
+                var response = await _httpClient.GetFromJsonAsync<List<User_ticketsDTO>>($"api/Films/userBilets?user={userId}");
+                return response ?? new List<User_ticketsDTO>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка при получении билетов: {ex.Message}");
+                return new List<User_ticketsDTO>();
+            }
+        }
 
     }
 }

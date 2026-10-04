@@ -12,7 +12,7 @@ namespace CinemaHubShared.Models
         public int? FK_Type_ticket { get; set; }
         public int? FK_Zal { get; set; }
         public int? FK_Ticket_status { get; set; }
-        public DateTime? DateSold { get; set; }
+        public DateTime? Date_sold { get; set; }
         public int? FK_Seans { get; set; }
     }
 }

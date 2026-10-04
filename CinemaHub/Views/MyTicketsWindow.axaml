@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CinemaHub.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:services="using:CinemaHub.Services"
+        xmlns:helpers="clr-namespace:CinemaHub.ViewModels"
+        xmlns:System="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" d:DesignWidth="600" Height="600"
+        x:Class="CinemaHub.Views.MyTicketsWindow"
+        x:DataType="vm:MyTicketsViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CinemaHub">
+
+    <Design.DataContext>
+        <vm:MyTicketsViewModel/>
+    </Design.DataContext>
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <Grid RowDefinitions="20*, 80*">
+            <Grid Grid.Row="0" Background="#0D1730">
+                <TextBlock FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Run Text="Cinema" Foreground="White"/>
+                    <Run Text="Hub" Foreground="Orange"/>
+                </TextBlock>
+                 <TextBlock FontSize="24" Text="Мои билеты" Foreground="Orange" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <ComboBox PlaceholderText="Меню" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="50" HorizontalContentAlignment="Center" Background="#252F36" Foreground="Orange" PlaceholderForeground="#FFBB3E" FontSize="18" SelectedItem="{Binding Option, Mode=TwoWay}">
+                <ComboBox.Items>
+                    <Button Content="Фильмы" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenFilmsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Мои билеты" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenMyTicketsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Настройки" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.OpenOptionsCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                    <Button Content="Выход" HorizontalAlignment="Stretch" Command="{x:Static helpers:PublicViewModelMethods.LogOutCommand}" CommandParameter="{Binding $parent[Window]}"/>
+                </ComboBox.Items>
+                <ComboBox.Styles>
+                    <Style Selector="ComboBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                 </ComboBox.Styles>
+            </ComboBox>
+            </Grid>
+            <Grid Grid.Row="1">
+                <ListBox ItemsSource="{Binding MyTickets}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Family}"/>
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Father}"/>               
+                                <TextBlock Text="{Binding TypeBilet}"/>               
+                                <TextBlock Text="{Binding CostBilet}"/>               
+                                <TextBlock Text="{Binding DateBiletBuyed}"/>               
+                                <TextBlock Text="{Binding NameBilet}"/>               
+                                <TextBlock Text="{Binding TicketZal}"/>               
+                                <TextBlock Text="{Binding BiletStatus}"/>               
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+    
+    
+</Window>

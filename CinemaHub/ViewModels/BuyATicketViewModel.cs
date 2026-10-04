@@ -10,6 +10,7 @@ using CinemaHub.Views;
 using System;
 using System.Linq;
 using Avalonia.Media.Imaging;
+using System.Diagnostics;
 
 namespace CinemaHub.ViewModels
 {
@@ -45,6 +46,9 @@ namespace CinemaHub.ViewModels
         public string? _userFamily = UserSession.Current?.Family;
 
         [ObservableProperty]
+        public Mesta_in_zalDTO? _selectedMesto;
+
+        [ObservableProperty]
         public string? _userFather = UserSession.Current?.Father;
         public BuyATicketViewModel(SeansDTO? selectedSeans, Zal? selectedZal)
         {
@@ -70,9 +74,8 @@ namespace CinemaHub.ViewModels
             Mesta.Clear();
             var result = await _apiService.GetMestaSelectedZalAsync(SelectedZal);
             foreach (var mesto in result)
-            {
+            {  
                 Mesta.Add(mesto);
-
             }
             _ = GetCostAndSum();
         }
@@ -102,6 +105,13 @@ namespace CinemaHub.ViewModels
         public async Task GoBack(Window? currentWindow)
         {
             currentWindow?.Close();
+        }
+
+        [RelayCommand]
+        public async Task BuyTicketAsync()
+        {
+            var result =  await _apiService.BuyATicketAsync(Seans,Cost,SelectedTicketType?.Id,SelectedZal?.Id,1,DateTime.UtcNow,UserSession.Current?.Id, SelectedMesto?.FK_Mesto);
+            Debug.WriteLine(result);
         }
     }
 }

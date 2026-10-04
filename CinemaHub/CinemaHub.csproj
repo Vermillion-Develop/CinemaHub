@@ -32,6 +32,9 @@
     <Compile Update="Views\AddNewCommentWindow.axaml.cs">
       <DependentUpon>AddNewCommentWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MyTicketsWindow.axaml.cs">
+      <DependentUpon>MyTicketsWindow.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\BuyATicketWindow.axaml.cs">
       <DependentUpon>BuyATicketWindow.axaml</DependentUpon>
     </Compile>

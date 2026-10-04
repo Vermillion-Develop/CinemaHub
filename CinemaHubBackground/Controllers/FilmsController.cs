@@ -246,5 +246,89 @@ namespace CinemaHubBackground.Controllers
             return Ok(mestList);
         }
 
+        [HttpPost("buyTicket")]
+        public async Task<IActionResult> AddNewTicketUser([FromBody] BuyTicketRequest? ticketRequest)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var ticket = new Ticket
+                {
+                    Name = ticketRequest?.NameTicket,
+                    Cost = ticketRequest?.CostTicket,
+                    FK_Type_ticket = ticketRequest?.FK_Type_ticket,
+                    FK_Zal = ticketRequest?.FK_Zal,
+                    FK_Ticket_status = ticketRequest?.FK_Ticket_status,
+                    Date_sold = ticketRequest?.DateSold,
+                    FK_Seans = ticketRequest?.FK_Seans,
+                };
+                _context.Tickets.Add(ticket);
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("Билет сохранен");
+                var user_ticket = new User_tickets
+                {
+                    FK_User = ticketRequest?.UserId,
+                    FK_Ticket = ticket.Id
+                };                
+                _context.UserTickets.Add(user_ticket);
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("Юзер сохранен");
+                var mestoInZal = await _context.MestosInZals.FirstOrDefaultAsync(x => x.FK_Mesto == ticketRequest.Mesto);
+                if(mestoInZal == null)
+                {
+                    await transaction.RollbackAsync();
+                    return BadRequest(new { message = "Указанное место не найдено в зале" });
+                }
+
+                mestoInZal.FK_Status_mesto = 1;
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("Статус сохранен");
+                await transaction.CommitAsync();
+
+                return Ok(new { message = "Билет куплен>" });
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = $"Ошибка на сервере: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("userBilets")]
+        public async Task<ActionResult<IEnumerable<User_ticketsDTO>>> GetUserTickets([FromQuery]int? user)
+        {
+            var zalsList = await (from usrTic in _context.UserTickets
+                                  join
+                                  t in _context.Tickets on usrTic.FK_Ticket equals t.Id
+                                  join
+                                  tb in _context.Ticket_types on t.FK_Type_ticket equals tb.Id
+                                  join 
+                                  st in _context.StatusTickets on t.FK_Ticket_status equals st.Id
+                                  join
+                                  usr in _context.Users on usrTic.FK_User equals usr.Id
+                                  join
+                                  z in _context.Zals on t.FK_Zal equals z.Id
+                                  where usrTic.FK_User == user
+                                  select new User_ticketsDTO()
+                                  {
+                                      Id = usrTic.Id,
+                                      FK_User = usrTic.FK_User,
+                                      FK_Ticket = usrTic.FK_Ticket,
+
+                                      Family = usr.Family,
+                                      Name = usr.Name,
+                                      Father = usr.Father,
+
+                                      TypeBilet = tb.Name,
+                                      CostBilet = t.Cost,
+                                      DateBiletBuyed = t.Date_sold,
+                                      NameBilet = t.Name,
+                                      TicketZal = z.Name,
+                                      BiletStatus = st.Name
+                                  }).ToListAsync();
+            return Ok(zalsList);
+        }
+
     }  
 }

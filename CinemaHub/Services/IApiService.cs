@@ -19,5 +19,7 @@ namespace CinemaHub.Services
         Task<List<Ticket_type>> GetTicketTypesAsync();
         Task<List<Zal>> GetZalsAsync();
         Task<List<Mesta_in_zalDTO>> GetMestaSelectedZalAsync(Zal? selectedZal);
+        Task<List<User_ticketsDTO>> GetUserTicketsAsync(int? userId);
+        Task<bool> BuyATicketAsync(SeansDTO? seans, decimal? cost, int? typeTicket, int? selectedZal, int? ticketStatus, DateTime? date, int? user, int? selectedMesto);
     }
 }

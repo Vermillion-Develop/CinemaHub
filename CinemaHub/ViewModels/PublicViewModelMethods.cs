@@ -31,11 +31,11 @@ namespace CinemaHub.ViewModels
         public static async Task OpenMyTickets(Window? currentWindow)
         {
 
-            PrimaryWindow primary = new PrimaryWindow
+            MyTicketsWindow MyTick = new MyTicketsWindow
             {
-                DataContext = new PrimaryWindowViewModel()
+                DataContext = new MyTicketsViewModel()
             };
-            primary.Show();
+            MyTick.Show();
             currentWindow?.Close();
         }
 

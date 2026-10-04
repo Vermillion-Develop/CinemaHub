@@ -12,9 +12,9 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="CinemaHub">
 
-    <!-- <Design.DataContext>
+    <Design.DataContext>
         <vm:BuyATicketViewModel/>
-    </Design.DataContext> -->
+    </Design.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Visible">
     <Grid RowDefinitions="20*, 80*">
         <Grid Grid.Row="0" Background="#0D1730">
@@ -56,7 +56,7 @@
                     <ListBox Margin="0,10" 
                      ItemsSource="{Binding Mesta}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedItem="{Binding SelectedMesto}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
@@ -70,7 +70,7 @@
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListBox>
+                    </ListBox>
                 <TextBlock Text="Тип билета" Margin="0,10"/>
                 <ComboBox PlaceholderText="Выберите тип билета" ItemsSource="{Binding TypesTicketsList}" DisplayMemberBinding="{Binding Name}" SelectedItem="{Binding SelectedTicketType, Mode=TwoWay}"/>
                 <TextBlock Margin="0,10">
@@ -85,10 +85,10 @@
                 </TextBlock>
                 <TextBlock Margin="0,10">
                     <Run Text="Итого к оплате:"/>
-                    <Run Text="{Binding Summa}"/>
+                    <Run Text="{Binding Cost}"/>
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" Margin="0,10">
-                    <Button Content="Купить"/>
+                    <Button Content="Купить" Command="{Binding BuyTicketCommand}"/>
                     <Button Content="Отмена" Command="{Binding GoBackCommand}" CommandParameter="{Binding $parent[Window]}"/>
                 </StackPanel>
             </StackPanel>

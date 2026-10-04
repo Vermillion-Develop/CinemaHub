@@ -31,6 +31,7 @@ namespace CinemaHubBackground.Data
         public DbSet<Mesto> Mestos { get; set; }
         public DbSet<Mesta_in_zal> MestosInZals { get; set; }
         public DbSet<User_tickets> UserTickets { get; set; }
+        public DbSet<Status_ticket> StatusTickets { get; set; }
 
 
 
@@ -66,6 +67,7 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<Mesta_in_zal>().ToTable("Mesta_in_zal");
 
             modelBuilder.Entity<User_tickets>().ToTable("User_tickets");
+            modelBuilder.Entity<Status_ticket>().ToTable("Status_ticket");
 
         }
     }
