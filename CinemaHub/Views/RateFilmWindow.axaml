@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CinemaHub.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:helpers="clr-namespace:CinemaHub.ViewModels"
+        xmlns:System="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" Width="600" Height="300"
+        x:Class="CinemaHub.Views.RateFilmWindow"
+        x:DataType="vm:RateFilmViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CinemaHub">
+
+    <Design.DataContext>
+        <vm:RateFilmViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="25*, 75*">
+        <Grid Grid.Row="0" Background="#0D1730">
+            <TextBlock Text="Оценить фильм" Foreground="Orange" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="Ваша оценка" FontSize="28" HorizontalAlignment="Center" Padding="0, 15"/>
+                <ComboBox MinWidth="400" ItemsSource="{Binding Rates}" SelectedItem="{Binding SelectedRate}"/>
+            </StackPanel>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Оценить" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding AddNewRateCommand}"/>
+                    <Button Content="Назад" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding GoBackToFilmCommand}" CommandParameter="{Binding $parent[Window]}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+    </Grid>
+    
+</Window>

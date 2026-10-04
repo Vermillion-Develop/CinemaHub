@@ -29,6 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddNewCommentWindow.axaml.cs">
+      <DependentUpon>AddNewCommentWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RateFilmWindow.axaml.cs">
+      <DependentUpon>RateFilmWindow.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AboutFilmWindow.axaml.cs">
       <DependentUpon>AboutFilmWindow.axaml</DependentUpon>
     </Compile>

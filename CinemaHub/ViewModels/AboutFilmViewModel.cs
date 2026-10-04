@@ -43,6 +43,9 @@ namespace CinemaHub.ViewModels
         public ObservableCollection<Rewards_in_filmDTO> RewardsInFilm { get; } = new();
         public ObservableCollection<Comments_in_filmDTO> CommentsInFilm { get; } = new();
 
+        [ObservableProperty]
+        public SeansDTO? _selectedSeans;
+
         public AboutFilmViewModel(SeansDTO? selectedFilm)
         {
             _apiService = new ApiService();
@@ -51,6 +54,7 @@ namespace CinemaHub.ViewModels
             Rate = selectedFilm?.FilmRate ?? 0;
             Description = selectedFilm?.FilmDescription ?? string.Empty;
             NameFilm = selectedFilm?.FilmName ?? string.Empty;
+            SelectedSeans = selectedFilm;
             _ = LoadActorsAsync(selectedFilm);
             
         }
@@ -126,6 +130,30 @@ namespace CinemaHub.ViewModels
             {
                 Debug.WriteLine($"Ошибка загрузки комментариев: {ex.Message}");
             }
+        }
+
+        [RelayCommand]
+
+        public async Task OpenRateWindow(SeansDTO? selectedSeans)
+        {
+            RateFilmWindow rate = new RateFilmWindow()
+            {
+                DataContext = new RateFilmViewModel(selectedSeans)
+            };
+
+            rate.Show();
+        }
+
+        [RelayCommand]
+
+        public async Task OpenNewCommentWindow(SeansDTO? selectedSeans)
+        {
+            AddNewCommentWindow comment = new AddNewCommentWindow()
+            {
+                DataContext = new AddNewCommentViewModel(selectedSeans)
+            };
+
+            comment.Show();
         }
     }
 }

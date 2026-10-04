@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:helpers="clr-namespace:CinemaHub.ViewModels"
         xmlns:System="clr-namespace:System;assembly=System.Runtime"
-        mc:Ignorable="d" d:DesignWidth="800" Height="1250"
+        mc:Ignorable="d" d:DesignWidth="800" Height="650"
         x:Class="CinemaHub.Views.AboutFilmWindow"
         x:DataType="vm:AboutFilmViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -17,7 +17,7 @@
 
     </Design.DataContext>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
     
         <Grid ColumnDefinitions="25*,50*,25*" RowDefinitions="20*,50*,30*" Background="#1B1820">
                 <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="#0D1730">
@@ -45,23 +45,24 @@
                 <Grid Grid.Row="1" Grid.ColumnSpan="3">
                    <Grid ColumnDefinitions="30*, 70*">
                        
-                       <StackPanel Grid.Column="0" Orientation="Vertical" Background="Violet">
+                       <StackPanel Grid.Column="0" Orientation="Vertical" Background="#0D1730">
                            <Image Source="{Binding ReadyImage}"/>
-                           <Label Content="Рейтинг фильма" HorizontalAlignment="Center" FontSize="20"/>
-                           <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}" HorizontalAlignment="Center" FontSize="20"/>
-                           <Button Background="Orange" Foreground="White" Content="Оценить" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+                           <Label Content="Рейтинг фильма" Foreground="Orange" HorizontalAlignment="Center" FontSize="20"/>
+                           <TextBlock Text="{Binding Rate, StringFormat={}{0:F2}}" Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
+                           <Button Background="Orange" Foreground="White" Content="Оценить" Margin="0,10" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="220" Command="{Binding OpenRateWindowCommand}" CommandParameter="{Binding SelectedSeans}"/>
+                           <Button Background="Orange" Foreground="White" Content="Оставить комментарий" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="220" />
                        </StackPanel>
-                       <StackPanel Grid.Column="1" Background="Blue">
+                       <StackPanel Grid.Column="1" Background="#0A1225">
                           <Grid RowDefinitions="50*, 25*, 25*">
-                              <ScrollViewer Grid.Row="0">
+                              <ScrollViewer  Grid.Row="0">
                                   <StackPanel MinHeight="150">
-                                    <TextBlock Text="Описание: "/>
-                                    <TextBlock Text="{Binding Description}"/>  
+                                    <TextBlock Foreground="White" Text="Описание: "/>
+                                    <TextBlock Foreground="White" Text="{Binding Description}"/>  
                                   </StackPanel>
                               </ScrollViewer>
-                             <ScrollViewer Grid.Row="1">
+                             <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled">
                                 <StackPanel Grid.Row="1" Orientation="Vertical">
-                                    <TextBlock Text="Актеры" Padding="0,20"/>
+                                    <TextBlock Text="Актеры" FontSize="24" Foreground="Orange" Padding="0,20"/>
                                     <ListBox Grid.Row="1" 
                                      ItemsSource="{Binding ActorsInFilm}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -79,19 +80,19 @@
                                                        Stretch="UniformToFill"/>
                                                 <TextBlock Text="{Binding ActorFamily}" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                                 <TextBlock Text="{Binding ActorName}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                                <TextBlock Text="{Binding ActorFather}" HorizontalAlignment="Center" FontSize="12" Foreground="Gray" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding ActorFather}" HorizontalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox> 
                                 </StackPanel>
                               </ScrollViewer>
-                              <ScrollViewer Grid.Row="2">
+                              <ScrollViewer HorizontalAlignment="Stretch" Grid.Row="2">
                                   <StackPanel Grid.Row="2" Orientation="Vertical">
-                                    <TextBlock Text="Награды" Padding="0,20"/>
+                                    <TextBlock Text="Награды" FontSize="24" Foreground="Orange" Padding="0,20"/>
                                 <ListBox Grid.Row="2" 
                                      ItemsSource="{Binding RewardsInFilm}"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -117,17 +118,17 @@
                    </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="pink">             
-                   <ListBox ItemsSource="{Binding CommentsInFilm}" Background="Red">
+                <Grid Grid.Row="2" Grid.ColumnSpan="3"> 
+                   <ListBox ItemsSource="{Binding CommentsInFilm}" Background="#1B1820">
                        <ListBox.ItemTemplate>
                            <DataTemplate>
                                <StackPanel>
                                  <TextBlock>
-                                     <Run Text="{Binding UserName}"/>
-                                     <Run Text="{Binding UserFamily}"/>
+                                     <Run Text="{Binding UserName}" Foreground="Orange"/>
+                                     <Run Text="{Binding UserFamily}" Foreground="Orange"/>
                                  </TextBlock>  
-                                 <TextBlock Text="{Binding CommentDescription}"/>
-                                 <TextBlock Text="{Binding CommentDate}"/>
+                                 <TextBlock Text="{Binding CommentDescription}" Foreground="White"/>
+                                 <TextBlock Text="{Binding CommentDate}" Foreground="White"/>
                                </StackPanel>
                            </DataTemplate>
                        </ListBox.ItemTemplate>

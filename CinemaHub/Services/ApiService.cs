@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CinemaHubShared.Models;
+using Avalonia.Controls.Documents;
 
 namespace CinemaHub.Services
 {
@@ -128,5 +129,21 @@ namespace CinemaHub.Services
                 return new List<Comments_in_filmDTO>();
             }
         }
+
+        public async Task<bool> RateTheFilmAsync(int? selectedFilm, int? selectedUser, int? selectedRate )
+        {
+            try
+            {
+                var rateData = new RateUserRequest() { FilmId = selectedFilm, UserId = selectedUser, UserRate = selectedRate };
+                var response = await _httpClient.PostAsJsonAsync("api/Films/rates", rateData);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка оценки фильма: {ex.Message}");
+                return false;
+            }
+        }
+        
     }
 }

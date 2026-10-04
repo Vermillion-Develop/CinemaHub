@@ -14,5 +14,6 @@ namespace CinemaHub.Services
         Task<List<Actor_in_filmDTO>> GetActorsInSelectedFilmAsync(SeansDTO? selectedFilm);
         Task<List<Rewards_in_filmDTO>> GetRewardsInSelectedFilmAsync(SeansDTO? selectedFilm);
         Task<List<Comments_in_filmDTO>> GetCommentsInSelectedFilmAsync(SeansDTO? selectedFilm);
+        Task<bool> RateTheFilmAsync(int? selectedFilm, int? selectedUser, int? selectedRate);
     }
 }

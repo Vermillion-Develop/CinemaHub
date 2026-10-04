@@ -130,5 +130,31 @@ namespace CinemaHubBackground.Controllers
                                      }).ToListAsync();
             return Ok(commentList);
         }
+
+        [HttpPost("rates")]
+        public async Task<IActionResult> AddNewRate([FromBody] RateUserRequest request)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var newRate = new Rates_Film
+                {
+                    FK_Film = request.FilmId,
+                    FK_User = request.UserId,
+                    Rates = request.UserRate
+                };
+                _context.RatesFilm.Add(newRate);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return Ok(new { message = "Оценка принята!" });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = $"Ошибка на сервере: {ex.Message}" });
+            }
+        }
     }
 }

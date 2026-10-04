@@ -22,6 +22,7 @@ namespace CinemaHubBackground.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Comments_in_film> CommentsInFilm { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Rates_Film> RatesFilm { get; set; }
 
 
 
@@ -45,6 +46,8 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<Comments_in_film>().ToTable("Comments_in_film");
             modelBuilder.Entity<Role>().ToTable("Role");
+
+            modelBuilder.Entity<Rates_Film>().ToTable("Users_rates");
 
 
         }
