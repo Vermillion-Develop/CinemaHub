@@ -25,6 +25,8 @@ namespace CinemaHub.ViewModels
 
         [ObservableProperty]
         public int? _selectedRate;
+        [ObservableProperty]
+        public string? _textError;
 
         private SeansDTO? _seans;
 
@@ -39,9 +41,9 @@ namespace CinemaHub.ViewModels
 
         public async Task AddNewRateAsync(Window? currentWindow)
         {
-            if (_seans == null || SelectedRate == null)
+            if (SelectedRate == null || _seans == null)
             {
-                System.Diagnostics.Debug.WriteLine("какой то прикольчик" + SelectedRate);
+                TextError = "Выберите оценку!";
                 return;
             }
             var response = await _apiService.RateTheFilmAsync(_seans?.FK_Film, UserSession.Current?.Id, SelectedRate);

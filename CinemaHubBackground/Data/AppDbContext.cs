@@ -69,6 +69,8 @@ namespace CinemaHubBackground.Data
             modelBuilder.Entity<User_tickets>().ToTable("User_tickets");
             modelBuilder.Entity<Status_ticket>().ToTable("Status_ticket");
 
+            modelBuilder.Entity<Rates_Film>().ToTable("Users_rates");
+
         }
     }
 }

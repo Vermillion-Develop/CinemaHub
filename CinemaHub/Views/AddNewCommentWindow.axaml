@@ -11,9 +11,9 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="CinemaHub">
 
-    <Design.DataContext>
+   <Design.DataContext>
         <vm:AddNewCommentViewModel/>
-    </Design.DataContext>
+   </Design.DataContext> 
 
     <Grid RowDefinitions="25*, 75*">
         <Grid Grid.Row="0" Background="#0D1730">
@@ -25,6 +25,7 @@
                <ScrollViewer VerticalScrollBarVisibility="Auto">
                    <TextBox Text="{Binding TextDescription}" MinHeight="150" MaxHeight="150" TextWrapping="Wrap"/>
                </ScrollViewer>
+               <TextBlock Text="{Binding TextError}" HorizontalAlignment="Center" Margin="0,5" Foreground="Red"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Отправить" Command="{Binding AddCommentTheFilmCommand}" CommandParameter="{Binding $parent[Window]}"/>
                     <Button Content="Назад" Command="{Binding GoBackToAboutFilmCommand}" CommandParameter="{Binding $parent[Window]}"/>

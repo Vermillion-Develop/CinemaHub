@@ -16,7 +16,7 @@
         <vm:MyTicketsViewModel/>
     </Design.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Grid RowDefinitions="20*, 80*">
+        <Grid RowDefinitions="20*, 15*, 65*">
             <Grid Grid.Row="0" Background="#0D1730">
                 <TextBlock FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Run Text="Cinema" Foreground="White"/>
@@ -38,21 +38,34 @@
                  </ComboBox.Styles>
             </ComboBox>
             </Grid>
-            <Grid Grid.Row="1">
-                <ListBox ItemsSource="{Binding MyTickets}">
+            <Grid Grid.Row="1" ColumnDefinitions="11*,11*,11*,11*,11*,11*,11*,11,11*" Background="#162128">
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Text="Фамилия" Margin="10,0"/>
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Имя" Margin="10,0"/>
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Text="Отчество" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3" Text="Тип билета" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Text="Цена билета" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Text="Дата покупки" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="6" Text="Фильм" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="7" Text="Зал" Margin="10,0"/>               
+                                        <TextBlock Padding="15,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="8" Text="Статус" Margin="10,0"/>
+                                    </Grid>
+            <Grid Grid.Row="2">
+                <ListBox ItemsSource="{Binding MyTickets}" Background="#162128">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Family}"/>
-                                <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Text="{Binding Father}"/>               
-                                <TextBlock Text="{Binding TypeBilet}"/>               
-                                <TextBlock Text="{Binding CostBilet}"/>               
-                                <TextBlock Text="{Binding DateBiletBuyed}"/>               
-                                <TextBlock Text="{Binding NameBilet}"/>               
-                                <TextBlock Text="{Binding TicketZal}"/>               
-                                <TextBlock Text="{Binding BiletStatus}"/>               
-                            </StackPanel>
+                            <Border Padding="15,50" Background="#11191E" BorderBrush="#E19A19" BorderThickness="1" CornerRadius="8">
+                                    <Grid Grid.Row="1" ColumnDefinitions="11*,11*,11*,11*,11*,11*,11*,11,11*">
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="0" Text="{Binding Family}" Margin="10,0"/>
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="1" Text="{Binding Name}" Margin="10,0"/>
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="2" Text="{Binding Father}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="3" Text="{Binding TypeBilet}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="4" Text="{Binding CostBilet}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="5" Text="{Binding DateBiletBuyed}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="6" Text="{Binding NameBilet}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="7" Text="{Binding TicketZal}" Margin="10,0"/>               
+                                        <TextBlock Foreground="White" HorizontalAlignment="Center" Grid.Column="8" Text="{Binding BiletStatus}" Margin="10,0"/>               
+                                    </Grid>
+                            </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

@@ -44,6 +44,11 @@ namespace CinemaHub.ViewModels
                 ErrorMessage = "Заполните обязательные поля!";
                 return;
             }
+            if(Password.Length < 8)
+            {
+                ErrorMessage = "Длина пароля должна состоять минимум из 8 символов!";
+                return;
+            }
             if(Password != SecondPassword)
             {
                 ErrorMessage = "Пароли не совпадают!";

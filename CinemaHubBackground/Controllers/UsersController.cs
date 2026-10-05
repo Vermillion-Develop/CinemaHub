@@ -60,6 +60,7 @@ namespace CinemaHubBackground.Controllers
                     Family = request.Family,
                     Name = request.Name,
                     Father = request.Father,
+                    FK_Role = 1,
                     FK_Login = newLogin.Login_Id,
                     Date_registration = DateTime.UtcNow
                 };

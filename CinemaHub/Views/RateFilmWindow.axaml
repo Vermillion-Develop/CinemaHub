@@ -23,6 +23,7 @@
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Text="Ваша оценка" FontSize="28" HorizontalAlignment="Center" Padding="0, 15"/>
                 <ComboBox MinWidth="400" ItemsSource="{Binding Rates}" SelectedItem="{Binding SelectedRate}"/>
+                <TextBlock Text="{Binding TextError}" Margin="0,5" Foreground="Red" HorizontalAlignment="Center"/>
             </StackPanel>
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

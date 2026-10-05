@@ -21,6 +21,9 @@ namespace CinemaHub.ViewModels
         public string? _textDescription;
 
         private SeansDTO? _seans;
+
+        [ObservableProperty]
+        public string? _textError;
         public AddNewCommentViewModel(SeansDTO? selectedSeans)
         {
             _apiService = new ApiService();
@@ -39,10 +42,13 @@ namespace CinemaHub.ViewModels
         {
             if (_seans == null)
             {
-                System.Diagnostics.Debug.WriteLine("какой то прикольчик");
                 return;
             }
-
+            if(string.IsNullOrWhiteSpace(TextDescription) || TextDescription == null)
+            {
+                TextError = "Отзыв не может быть пустым!";
+                return;
+            }
             var result = await _apiService.MakeACommenTheFilmAsync(UserSession.Current?.Id, _seans.FK_Film, TextDescription, DateTime.UtcNow);
             System.Diagnostics.Debug.WriteLine(result);
             currentWindow?.Close();
