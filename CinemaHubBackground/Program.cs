@@ -10,7 +10,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
-
+builder.WebHost.UseUrls("http://0.0.0");
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
